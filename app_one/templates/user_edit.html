@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>User Wall</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+    </head>
+<body>
+    <h3>Test App  <a href="/">broken home link</a> <a href="/sign_in">Broken sign in</a></h3>
+
+    <div class="side_by">
+        <h6>Edit Information</h6>
+        <form action="/users/edit_self" method="POST">
+            {% csrf_token %}
+            <label for="email">Email</label>
+            <input type="text" name="email" value="USEREMAIL">
+            <label for="name">Name:</label>
+            <input type="text" name="name" value="USER NAME">
+            <label for="alias">Alias: </label>
+            <input type="text" name="alias" value="user alias">
+            <button>Save</button>
+        </form>
+    </div>
+    <div class="side_by">
+        <h6>Change Password</h6>
+        <form action="/changepassword_stuff" method="POST">
+            {% csrf_token %}
+            <label for="password">Password:</label>
+            <input type="text" name="password">
+            <label for="password_conf">Password Confirmation: </label>
+            <input type="text" name="password_conf">
+            <button>Update Password</button>
+        </form>
+    </div>
+</body>
+</html>
