@@ -27,7 +27,7 @@
     </div>
     <div class="side_by">
         <h6>Change Password</h6>
-        <form action="/changepassword_stuff" method="POST">
+        <form action="/users/change_password" method="POST">
             {% csrf_token %}
             <label for="password">Password:</label>
             <input type="text" name="password"><br>

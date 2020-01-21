@@ -10,12 +10,17 @@ urlpatterns = [
     path('dashboard/admin', views.admin_dashboard),
     path('users/new', views.users_new),
     path('users/show/<int:user_id>', views.the_wall),
+    ####################WALL COMPONENTS###########
+    path('the_wall/create_message', views.create_message),
+    path('the_wall/create_comment', views.create_comment),
+    ##############################################
     path('users/edit/<int:user_id>', views.edit_user),
     path('users/edit', views.edit_self),
     # POST METHODS
     path('log_in', views.log_in),
     path('log_out', views.log_out),
     path('create_user', views.create_user),
+    path('create_user_admin', views.create_user_admin),
     path('users/make_changes', views.make_changesx),
     path('users/change_password', views.change_passwordx),
     path('users/edit/<int:user_id>/make_changes', views.make_changes),
