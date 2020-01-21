@@ -8,17 +8,18 @@
         <link rel="stylesheet" href="{% static 'style.css' %}">
     </head>
 <body>
-    <h3>Test App  <a href="/">broken home link</a> <a href="/sign_in">Broken sign in</a></h3>
+    <h3>Test App  <a href="/dashboard">Dashboard</a> <a href="/log_out">Log out</a></h3>
 
     <div class="side_by">
         <h6>Edit Information</h6>
-        <form action="/users/edit/USERID/edit" method="POST">
+        <form action="/users/edit/{{target_user.id}}/make_changes" method="POST">
             {% csrf_token %}
             <label for="email">Email</label>
-            <input type="text" name="email" value="USEREMAIL">
+            <input type="text" name="email" value="{{target_user.email}}"><br>
             <label for="name">Name:</label>
-            <input type="text" name="name" value="USER NAME">
+            <input type="text" name="name" value="{{target_user.name}}"><br>
             <label for="alias">Alias: </label>
+            <input type="text" name="alias" value="{{target_user.alias}}"><br>
             <select name="user_level" id="">
                 <option value="normal">Normal</option>
                 <option value="admin">Admin</option>
@@ -28,12 +29,12 @@
     </div>
     <div class="side_by">
         <h6>Change Password</h6>
-        <form action="/changepassword_stuff" method="POST">
+        <form action="/users/edit/{{target_user.id}}/change_password" method="POST">
             {% csrf_token %}
             <label for="password">Password:</label>
-            <input type="text" name="password">
+            <input type="text" name="password"><br>
             <label for="password_conf">Password Confirmation: </label>
-            <input type="text" name="password_conf">
+            <input type="text" name="password_conf"><br>
             <button>Update Password</button>
         </form>
     </div>
