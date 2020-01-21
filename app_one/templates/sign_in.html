@@ -6,7 +6,7 @@
         {% load static %}
         <link rel="stylesheet" href="{% static 'style.css' %}">
     </head>
-    <h3>Test App  <a href="/">broken home link</a> <a href="/sign_in">Broken sign in</a></h3>
+    <h3>Test App  <a href="/">Home</a> <a href="/signin">Sign in</a></h3>
 
     <div class="side_by">
         <form action="/log_in" method="POST">
@@ -28,5 +28,5 @@
     </ul>
     {% endif %}
 
-    <a href="/register">Don't have an account? Register BROKEN</a>
+    <a href="/register">Don't have an account? Register</a>
 </html>
