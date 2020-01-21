@@ -7,15 +7,29 @@ from app_one.models import User, Comment, Message
 
 # Create your views here.
 def index(request):
+    if 'logged_in' not in request.session:
+        request.session['logged_in'] = False
+    if request.session['logged_in'] == True:
+        return redirect('/dashboard')
     return render(request, 'index.html')
 
 def signin(request):
+    if 'logged_in' not in request.session:
+        request.session['logged_in'] = False
+    if request.session['logged_in'] == True:
+        return redirect('/dashboard')
     return render(request, "sign_in.html")
 
 def register(request):
+    if 'logged_in' not in request.session:
+        request.session['logged_in'] = False
+    if request.session['logged_in'] == True:
+        return redirect('/dashboard')
     return render(request, "register.html")
 
 def dashboard(request):
+    if not logVal_user(request):
+        return redirect('/')
     user = User.objects.get(id=request.session['user_id'])
     if user.user_level == 9:
         return redirect('/dashboard/admin')
@@ -29,6 +43,12 @@ def dashboard(request):
     return render(request, "user_dashboard.html", context)
 
 def admin_dashboard(request):
+    if not logVal_user(request):
+        return redirect('/')
+    current_user = User.objects.get(id=request.session['user_id'])
+    if current_user.user_level != 9:
+        return redirect('/log_out')
+
     all_users = User.objects.all()
 
 
@@ -43,6 +63,8 @@ def users_new(request):
 ###################WALL BEGINS####################################################
 
 def the_wall(request, user_id):
+    if not logVal_user(request):
+        return redirect('/')
     all_messages = Message.objects.all().order_by('-created_at')
     target_user = User.objects.get(id=user_id)
     target_messages = target_user.user_wall.all().order_by('-created_at')
@@ -58,6 +80,8 @@ def the_wall(request, user_id):
 
 
 def create_message(request):
+    if not logVal_user(request):
+        return redirect('/')
     content = request.POST['content']
     target_user = User.objects.get(id=request.POST['on_which_wall'])
     user = User.objects.get(id=request.session['user_id'])
@@ -66,6 +90,8 @@ def create_message(request):
     return redirect('/users/show/'+str(target_user.id))
 
 def create_comment(request):
+    if not logVal_user(request):
+        return redirect('/')
     #Validate
     content = request.POST['content']
     user = User.objects.get(id=request.session['user_id'])
@@ -80,6 +106,12 @@ def create_comment(request):
 #################################################################################
 
 def edit_user(request, user_id):
+    if not logVal_user(request):
+        return redirect('/')
+    current_user = User.objects.get(id=request.session['user_id'])
+    if current_user.user_level != 9:
+        return redirect('/log_out')
+        
     target_user = User.objects.get(id=user_id)
     context ={
         'target_user': target_user
@@ -88,6 +120,8 @@ def edit_user(request, user_id):
     return render(request, "admin_edit.html", context)
 
 def edit_self(request):
+    if not logVal_user(request):
+        return redirect('/')
     user = User.objects.get(id=request.session['user_id'])
     context = {
         'user': user
@@ -95,6 +129,10 @@ def edit_self(request):
     return render(request, "user_edit.html", context)
 
 def log_in(request):
+    if 'logged_in' not in request.session:
+        request.session['logged_in'] = False
+    if request.session['logged_in'] == True:
+        return redirect('/dashboard')
     email = request.POST['email']
     user = User.objects.get(email=email)
     request.session['user_id'] = user.id
@@ -108,6 +146,10 @@ def log_out(request):
 
 def create_user(request):
     # loading my vars
+    if 'logged_in' not in request.session:
+        request.session['logged_in'] = False
+    if request.session['logged_in'] == True:
+        return redirect('/dashboard')
     name = request.POST['name']
     alias = request.POST['alias']
     email = request.POST['email']
@@ -127,6 +169,11 @@ def create_user(request):
 
 def create_user_admin(request):
     #need validations
+    if not logVal_user(request):
+        return redirect('/')
+    current_user = User.objects.get(id=request.session['user_id'])
+    if current_user.user_level != 9:
+        return redirect('/log_out')
     name = request.POST['name']
     alias = request.POST['alias']
     email = request.POST['email']
@@ -136,6 +183,11 @@ def create_user_admin(request):
     return redirect('/dashboard/admin')
 
 def make_changes(request, user_id):
+    if not logVal_user(request):
+        return redirect('/')
+    current_user = User.objects.get(id=request.session['user_id'])
+    if current_user.user_level != 9:
+        return redirect('/log_out')
     target_user = User.objects.get(id=user_id)
     #need validation
 
@@ -148,6 +200,8 @@ def make_changes(request, user_id):
     return redirect('/dashboard/admin')
 
 def make_changesx(request):
+    if not logVal_user(request):
+        return redirect('/')
     user = User.objects.get(id=request.session['user_id'])
     #need validation
     user.name = request.POST['name']
@@ -160,6 +214,11 @@ def make_changesx(request):
     return redirect('/dashboard')
 
 def change_password(request, user_id):
+    if not logVal_user(request):
+        return redirect('/')
+    current_user = User.objects.get(id=request.session['user_id'])
+    if current_user.user_level != 9:
+        return redirect('/log_out')
     #make changes here
     user = User.objects.get(id=user_id)
     user.password = request.POST['password']
@@ -169,6 +228,8 @@ def change_password(request, user_id):
 
 
 def change_passwordx(request):
+    if not logVal_user(request):
+        return redirect('/')
     #for users to change their own password.  Bad panic naming convention
     user = User.objects.get(id=request.session['user_id'])
     user.password = request.POST['password']
@@ -178,6 +239,11 @@ def change_passwordx(request):
     return redirect('/dashboard')
 
 def confirmation(request, user_id):
+    if not logVal_user(request):
+        return redirect('/')
+    current_user = User.objects.get(id=request.session['user_id'])
+    if current_user.user_level != 9:
+        return redirect('/log_out')
     user = User.objects.get(id=user_id)
     context = {
         'user': user
@@ -185,7 +251,19 @@ def confirmation(request, user_id):
     return render(request, "confirmation.html", context)
 
 def delete_user(request, user_id):
+    if not logVal_user(request):
+        return redirect('/')
+    current_user = User.objects.get(id=request.session['user_id'])
+    if current_user.user_level != 9:
+        return redirect('/log_out')
     user = User.objects.get(id=user_id)
     user.delete()
     # check if user still exists.  If self delete, log them out
     return redirect('/dashboard')
+
+def logVal_user(request):
+    if 'logged_in' not in request.session:
+        request.session['logged_in'] = False
+    if request.session['logged_in'] == False:
+        return(False)
+    return(True)
