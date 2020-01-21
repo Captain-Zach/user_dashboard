@@ -10,6 +10,7 @@
     </head>
 <body>
     <h3>Test App  <a href="/">Home </a> <a href="/log_out">Log out</a></h3>
+    <h3><a href="/users/new">Make a new user?</a></h3>
     <form action="/users/new">
         <button>Add new</button>
     </form>
@@ -24,14 +25,16 @@
             <th>user_level</th>
             <th>actions</th>
         </thead>
+        {% for user in all_users %}
         <tr>
-            <td>some</td>
-            <td>filler</td>
-            <td>infor</td>
-            <td>mation</td>
-            <td>for</td>
-            <td>you</td>
+            <td>{{user.id}}</td>
+            <td><a href="/users/show/{{user.id}}">{{user.name}}</a></td>
+            <td>{{user.email}}</td>
+            <td>{{user.created_at}}</td>
+            <td>{% if user.user_level == 9 %} Admin {% endif %} {% if user.user_level == 1 %} Normal {% endif %}</td>
+            <td><a href="/users/edit/{{user.id}}">Edit</a> <a href="/confirmation/{{user.id}}">Remove</a></td>
         </tr>
+        {% endfor %}
     </table>
     <h3>SET UP LOOP</h3>
     

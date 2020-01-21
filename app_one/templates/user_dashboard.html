@@ -22,16 +22,17 @@
             <th>user_level</th>
             
         </thead>
+        {% for user in all_users %}
         <tr>
-            <td>some</td>
-            <td>filler</td>
-            <td>infor</td>
-            <td>mation</td>
-            <td>for</td>
-            
+            <td>{{user.id}}</td>
+            <td><a href="/users/show/{{user.id}}">{{user.name}}</a></td>
+            <td>{{user.email}}</td>
+            <td>{{user.created_at}}</td>
+            <td>{% if user.user_level == 9 %} Admin {% endif %} {% if user.user_level == 1 %} Normal {% endif %}</td>
         </tr>
+        {% endfor %}
     </table>
-    <h3>SET UP LOOP</h3>
+    <a href="/users/edit">Edit your information</a>
     
 </body>
 </html>
